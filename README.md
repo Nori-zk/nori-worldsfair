@@ -31,12 +31,15 @@ any EVM ecosystem; Tempo is the first port.
 ## What is live (testnets only)
 
 - **Ethereum Sepolia to Solana devnet on real Groth16 proofs since 7 Oct 2026.**
-- **10-hour soak (7-8 Oct):** 39 of 39 snapshots proven and applied; median 18 min (15-22) from
-  Ethereum block to Solana, almost all of it Ethereum finality.
-- **Proof queue:** 168 of 169 requests proven, 152 batches (11 Oct, 22:59 UTC; the one waiting
-  was the soak's first snapshot).
-- **Backstop keeper:** on its own server, in a 7-day soak since 12 Oct.
-- **Four web apps hosted**, reading Sepolia and Solana devnet live ([Try it](#try-it)).
+- **Soaks:** 7-8 Oct, 10 h, 39 of 39 snapshots proven and applied; 11-12 Oct, 17.8 h, four
+  guards, 68 of 69 (the last in flight). Ethereum block to read applied on Solana: median 18 min
+  (15-25), almost all of it Ethereum finality. Reports in
+  [submission-solana/docs/evidence](https://github.com/Nori-zk/nori-worldsfair-submission/blob/develop/docs/evidence/README.md).
+- **Proof queue:** 241 of 244 requests proven, 224 batches (12 Oct, 17:16 UTC).
+- **Backstop keeper:** on its own server since 12 Oct, in a 7-day soak; proven-facts links each
+  proven snapshot to the keeper's verifying transactions on Solana.
+- **Every guard state on purpose:** test B tripped, test A paused at source, a fifth guard
+  stale, demo and shadow healthy; four hosted apps read it live ([Try it](#try-it)).
 - **Tempo:** not deployed; runs end to end on local chains.
 
 | What                                                        | Network       | Address                                                                                                                                           |
