@@ -1,0 +1,28 @@
+[submodule "submission-solana"]
+	path = submission-solana
+	url = https://github.com/Nori-zk/nori-worldsfair-submission.git
+	branch = develop
+[submodule "submission-tempo"]
+	path = submission-tempo
+	url = https://github.com/Nori-zk/nori-worldsfair-submission-tempo.git
+	branch = develop
+[submodule "sdk-solana"]
+	path = sdk-solana
+	url = https://github.com/Nori-zk/nori-solana-sdk.git
+	branch = develop
+[submodule "sdk-tempo"]
+	path = sdk-tempo
+	url = https://github.com/Nori-zk/nori-tempo-sdk.git
+	branch = develop
+[submodule "bridge-head-solana"]
+	path = bridge-head-solana
+	url = https://github.com/Nori-zk/nori-bridge-head.git
+	branch = FEAT/solana-bridge-sepolia-glamsterdam
+[submodule "bridge-head-tempo"]
+	path = bridge-head-tempo
+	url = https://github.com/Nori-zk/nori-bridge-head.git
+	branch = FEAT/tempo-bridge-sepolia-glamsterdam
+[submodule "sp1-solana"]
+	path = sp1-solana
+	url = https://github.com/Nori-zk/sp1-solana.git
+	branch = feat/sp1-v6-groth16-master

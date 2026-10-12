@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+  <diagram name="Nori services">
+    <mxGraphModel grid="1" gridSize="10" page="0" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="&lt;b&gt;Nori: how the services compose&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="40" y="0" width="1700" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="Shown for the Solana reader chain; Tempo is the same pipeline with its own queue, proof submitter and verifier. Every step is a notice on the bus; the services act on them and the clients follow them." style="text;html=1;align=left;verticalAlign=middle;fontSize=13;fontColor=#555555;" vertex="1" parent="1">
+          <mxGeometry x="40" y="34" width="1700" height="26" as="geometry" />
+        </mxCell>
+
+        <!-- External services (clouds) -->
+        <mxCell id="succinct" value="SP1 prover backend&lt;br&gt;(Succinct network or local GPU)" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="75" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="beacon" value="Beacon RPC" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1420" y="75" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="execrpc" value="Execution RPC&lt;br&gt;(eth_getProof of the queue&lt;br&gt;at the finalized block)" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="900" y="75" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ethrpc" value="Ethereum RPC" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="75" y="470" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="solrpc" value="Solana RPC" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="550" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Ethereum (Sepolia) -->
+        <mxCell id="eth" value="Ethereum (Sepolia)" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=14;rounded=1;arcSize=4;" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="230" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="queue" value="&lt;b&gt;Proof request queue&lt;/b&gt;&lt;br&gt;one per reader chain;&lt;br&gt;any contract can enqueue" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;strokeWidth=2;" vertex="1" parent="eth">
+          <mxGeometry x="20" y="40" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="snap" value="&lt;b&gt;NoriSnapshot&lt;/b&gt;&lt;br&gt;batches view calls into one&lt;br&gt;results root, enqueues once" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;strokeWidth=2;" vertex="1" parent="eth">
+          <mxGeometry x="20" y="150" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Prover host -->
+        <mxCell id="host" value="Nori's prover host (private infrastructure)" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f9f5fb;strokeColor=#9673a6;verticalAlign=bottom;align=left;fontStyle=1;fontSize=14;spacingLeft=8;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="900" y="190" width="760" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="sp1" value="&lt;b&gt;SP1 prover&lt;/b&gt;&lt;br&gt;Groth16 job per finality step" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;strokeWidth=2;" vertex="1" parent="host">
+          <mxGeometry x="220" y="50" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="head" value="&lt;b&gt;Bridge head (nbhead)&lt;/b&gt;&lt;br&gt;Helios store + checkpoint {slot, store hash, cursor};&lt;br&gt;queue witness, SHA-256 batch, proof inputs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;strokeWidth=2;" vertex="1" parent="host">
+          <mxGeometry x="40" y="160" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="finality" value="&lt;b&gt;Finality change detector&lt;/b&gt;&lt;br&gt;follows the beacon chain,&lt;br&gt;wakes the head on a new finalized slot" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;strokeWidth=2;" vertex="1" parent="host">
+          <mxGeometry x="470" y="160" width="250" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="orch" value="&lt;b&gt;Orchestrator&lt;/b&gt;&lt;br&gt;a state machine over the notices: publishes the ProofMessage,&lt;br&gt;re-stages a failed job, realigns the head to the chain, resumes on restart" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;strokeWidth=2;" vertex="1" parent="host">
+          <mxGeometry x="40" y="260" width="440" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Bus -->
+        <mxCell id="bus" value="&lt;b&gt;RabbitMQ&lt;/b&gt;&lt;br&gt;notices +&lt;br&gt;worker messages" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="620" y="425" width="130" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- Submitter and websocket server -->
+        <mxCell id="submitter" value="&lt;b&gt;Proof submitter&lt;/b&gt; (one per reader chain)&lt;br&gt;sends the update tx, waits for finality,&lt;br&gt;reports success or failure; heartbeat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="940" y="550" width="260" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="wss" value="&lt;b&gt;Nori websocket server&lt;/b&gt; (wss)&lt;br&gt;bridge state, timings per stage,&lt;br&gt;each transition, Ethereum finality" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="310" y="430" width="230" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- On-chain -->
+        <mxCell id="chain" value="Solana devnet (on-chain)" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;rounded=1;arcSize=4;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="720" width="420" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="verifier" value="&lt;b&gt;Nori verifier program&lt;/b&gt;&lt;br&gt;verifies the Groth16 proof,&lt;br&gt;stores head + batch root" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;strokeWidth=2;" vertex="1" parent="chain">
+          <mxGeometry x="20" y="45" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="read" value="&lt;b&gt;nori-read&lt;/b&gt;&lt;br&gt;one result vs&lt;br&gt;a batch root" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;strokeWidth=2;" vertex="1" parent="chain">
+          <mxGeometry x="210" y="45" width="90" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="backstop" value="&lt;b&gt;Backstop&lt;/b&gt;&lt;br&gt;guards;&lt;br&gt;STALE refuses" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;" vertex="1" parent="chain">
+          <mxGeometry x="310" y="45" width="90" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Clients -->
+        <mxCell id="clients" value="Clients: the keeper and the web apps, built on @nori-zk/nori-bridge-solana-sdk" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=bottom;align=left;fontStyle=1;fontSize=14;spacingLeft=8;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="40" y="620" width="780" height="230" as="geometry" />
+        </mxCell>
+                                                        <mxCell id="sdk" value="&lt;b&gt;SDK machines&lt;/b&gt;: connections to Ethereum, Solana and the Nori websocket (with connection grants), proof requests, transactions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;strokeWidth=2;" vertex="1" parent="clients">
+          <mxGeometry x="20" y="40" width="740" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="keeper" value="&lt;b&gt;Keeper&lt;/b&gt; (CLI)&lt;br&gt;snapshots on a heartbeat and on change, submits reads to Backstop" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;strokeWidth=2;" vertex="1" parent="clients">
+          <mxGeometry x="20" y="130" width="340" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="apps" value="&lt;b&gt;Web apps&lt;/b&gt; (yaw)&lt;br&gt;prove-balance, proven-facts, guard-status, bridge dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;strokeWidth=2;" vertex="1" parent="clients">
+          <mxGeometry x="400" y="130" width="360" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Edges: prover host -->
+        <mxCell id="e-sp1" value="job / proof" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;startArrow=block;startSize=8;endArrow=block;endSize=8;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="sp1" target="succinct">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-headsp1" value="proof inputs / Groth16 proof" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;startArrow=block;startSize=8;endArrow=block;endSize=8;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="head" target="sp1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-beacon" value="finality updates" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="beacon" target="finality">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-exec" value="queue witness" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="execrpc" target="head">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-fin" value="finality change" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="finality" target="head">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-orch" value="ProofMessage, notices" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;startArrow=block;startSize=8;endArrow=block;endSize=8;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.1705;entryY=0;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="head" target="orch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Edges: bus -->
+        <mxCell id="e-orchbus" value="worker messages / notices" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;startArrow=block;startSize=8;endArrow=block;endSize=8;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="orch" target="bus">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-bussub" value="proof in / result + notices out" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;startArrow=block;startSize=8;endArrow=block;endSize=8;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="bus" target="submitter">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="685" y="590" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-buswss" value="notices" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="bus" target="wss">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Edges: chain side -->
+        <mxCell id="e-subrpc" value="update tx" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="submitter" target="solrpc">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-rpcchain" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;startArrow=block;startSize=8;endArrow=block;endSize=8;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.3;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="solrpc" target="chain">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-roots" value="batch roots" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="verifier" target="read">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-backstop" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="read" target="backstop">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-solclients" value="reads, snapshot results, assert_healthy, sends" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;startArrow=block;startSize=8;endArrow=block;endSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="sdk" target="solrpc">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1380" y="690" />
+            </Array>
+            <mxPoint x="60" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Edges: client side -->
+        <mxCell id="e-wssclient" value="subscriptions, heartbeat, resubscribe" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;startArrow=block;startSize=8;endArrow=block;endSize=8;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.52;entryY=0;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="wss" target="sdk">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-ethclient" value="enqueue, snapshots, reads" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;startArrow=block;startSize=8;endArrow=block;endSize=8;exitX=0.14;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;labelBackgroundColor=#ffffff;fontSize=11;" edge="1" parent="1" source="sdk" target="ethrpc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-ethrpc" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;startArrow=block;startSize=8;endArrow=block;endSize=8;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="ethrpc" target="eth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend" value="Purple: Nori's own services (the orchestrator, the bus, the proof submitters and the websocket server run on Nori's private infrastructure) · Blue / green: on-chain · Grey: clients, every box a ystate machine · Clouds: external RPCs · Testnets only" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontColor=#555555;" vertex="1" parent="1">
+          <mxGeometry x="40" y="880" width="1700" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
