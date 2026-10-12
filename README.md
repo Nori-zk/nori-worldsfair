@@ -39,13 +39,13 @@ any EVM ecosystem; Tempo is the first port.
 - **Four web apps hosted**, reading Sepolia and Solana devnet live ([Try it](#try-it)).
 - **Tempo:** not deployed; runs end to end on local chains.
 
-| What | Network | Address |
-| --- | --- | --- |
-| Proof request queue | Sepolia | [`0x9AeAc0174f7bDf397C6dB1f62c120E8170e5B87e`](https://sepolia.etherscan.io/address/0x9AeAc0174f7bDf397C6dB1f62c120E8170e5B87e) |
-| NoriSnapshot (batched view calls) | Sepolia | [`0xC377EbBF516a9DB2Fe5AEB65fA19D4dca1717340`](https://sepolia.etherscan.io/address/0xC377EbBF516a9DB2Fe5AEB65fA19D4dca1717340) |
+| What                                                        | Network       | Address                                                                                                                                           |
+| ----------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Proof request queue                                         | Sepolia       | [`0x9AeAc0174f7bDf397C6dB1f62c120E8170e5B87e`](https://sepolia.etherscan.io/address/0x9AeAc0174f7bDf397C6dB1f62c120E8170e5B87e)                   |
+| NoriSnapshot (batched view calls)                           | Sepolia       | [`0xC377EbBF516a9DB2Fe5AEB65fA19D4dca1717340`](https://sepolia.etherscan.io/address/0xC377EbBF516a9DB2Fe5AEB65fA19D4dca1717340)                   |
 | Nori verifier program (verifies proofs, stores batch roots) | Solana devnet | [`EUz5RMQxYkc9zu12wpCDu9syvr4MarghoYb6jHAvdAcg`](https://explorer.solana.com/address/EUz5RMQxYkc9zu12wpCDu9syvr4MarghoYb6jHAvdAcg?cluster=devnet) |
-| Backstop | Solana devnet | [`JAZNGzLyN1TKhjnDDKrSsaQveAhUZUjiG8usM9Du5UD9`](https://explorer.solana.com/address/JAZNGzLyN1TKhjnDDKrSsaQveAhUZUjiG8usM9Du5UD9?cluster=devnet) |
-| nori-read-example | Solana devnet | [`5tA2aWbrP7JaKtcP2sJTp676TbFc6MEF7hcWCo9KqhS7`](https://explorer.solana.com/address/5tA2aWbrP7JaKtcP2sJTp676TbFc6MEF7hcWCo9KqhS7?cluster=devnet) |
+| Backstop                                                    | Solana devnet | [`JAZNGzLyN1TKhjnDDKrSsaQveAhUZUjiG8usM9Du5UD9`](https://explorer.solana.com/address/JAZNGzLyN1TKhjnDDKrSsaQveAhUZUjiG8usM9Du5UD9?cluster=devnet) |
+| nori-read-example                                           | Solana devnet | [`5tA2aWbrP7JaKtcP2sJTp676TbFc6MEF7hcWCo9KqhS7`](https://explorer.solana.com/address/5tA2aWbrP7JaKtcP2sJTp676TbFc6MEF7hcWCo9KqhS7?cluster=devnet) |
 
 SP1 program vkey (pinned on-chain at initialize):
 `0x00e51197676aceacae2d0b4810c9f421b5b47a86b55031dcbe034ef4cee2a6a7`.
@@ -73,24 +73,24 @@ ELF and its vkey.
 One row per submodule, each pinned to an exact commit; plain links, so nobody needs to init them.
 "Before" means before the hackathon started (2026-09-14 15:00 UTC); figures from `git log`.
 
-| Path | What it is | Talks to | Before / during the hackathon |
-| --- | --- | --- | --- |
-| [`submission-solana`](https://github.com/Nori-zk/nori-worldsfair-submission) | Solana submission: NoriSnapshot, `nori-read`, Backstop, `nori-read-example`, the keeper (`keeper/`), four web apps, dry-run and soak scripts | NoriSnapshot enqueues on sdk-solana's Sepolia queue; `nori-read` checks results against the batch roots sdk-solana's program stores; the keeper and apps use the sdk-solana npm SDK and its Rust crates | All during (repo starts 6 Oct; 146 commits at `e8569a1`) |
-| [`submission-tempo`](https://github.com/Nori-zk/nori-worldsfair-submission-tempo) | Tempo submission: `NoriRead.sol` and Backstop in Solidity, the token migration (contracts, CLI, dry run, migrate app), the keeper, prove-balance app and bridge dashboard | The same on Tempo, through sdk-tempo's `NoriTempoTokenBridge` and npm SDK | All during (forked from the Solana submission 9 Oct; 64 commits at `c216a2d`) |
-| [`sdk-solana`](https://github.com/Nori-zk/nori-solana-sdk) | Nori verifier program (Anchor), proof submitter, CLI, Ethereum contracts (proof request queue), TS SDK | Verifies bridge-head-solana's proofs with sp1-solana; uses bridge-head's crates (hashing, vkey, primitives); the SDK follows the prover's websocket | Before: a 3-commit stub program (332 lines of Rust); the proof request queue's design comes from the prover's pre-hackathon work. During: 37 commits, +61,895 / -2,607 lines |
-| [`sdk-tempo`](https://github.com/Nori-zk/nori-tempo-sdk) | `NoriTempoTokenBridge` (with `adoptMirror` for the migration), Ethereum contracts, TS SDK for Tempo | Verifies bridge-head-tempo's proofs with Succinct's SP1 Solidity verifier; the same bridge-head crates | All Tempo code during (forked from sdk-solana 9 Oct, so it carries the same 332-line stub in its history) |
-| [`bridge-head-solana`](https://github.com/Nori-zk/nori-bridge-head/tree/FEAT/solana-bridge-sepolia-glamsterdam) | The prover: Helios in SP1, proof request queue, Groth16 proofs | Follows Sepolia finality and drains the queue in sdk-solana's contracts; its proofs go to sdk-solana's program | Before: fork of Succinct's sp1-helios, Nori's Ethereum light-client prover since Feb 2025; a Zellic audit report (added Aug 2025) and its remediation are in the repo. During: Solana target, 6 commits, +3,601 / -2,914 lines |
-| [`bridge-head-tempo`](https://github.com/Nori-zk/nori-bridge-head/tree/FEAT/tempo-bridge-sepolia-glamsterdam) | Same prover, Tempo branch | The same for sdk-tempo's queue and bridge | Solana branch + 1 docs/Cargo.toml commit |
-| [`sp1-solana`](https://github.com/Nori-zk/sp1-solana/tree/feat/sp1-v6-groth16-master) | Groth16 verifier for Solana, ported to SP1 v6 | A Rust crate in sdk-solana's program and proof submitter | All before (fork of Succinct's sp1-solana, last commit 14 Sep, 3.5 h before the start); used as-is |
+| Path                                                                                                            | What it is                                                                                                                                                                | Talks to                                                                                                                                                                                                | Before / during the hackathon                                                                                                                                                                                                  |
+| --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`submission-solana`](https://github.com/Nori-zk/nori-worldsfair-submission)                                    | Solana submission: NoriSnapshot, `nori-read`, Backstop, `nori-read-example`, the keeper (`keeper/`), four web apps, dry-run and soak scripts                              | NoriSnapshot enqueues on sdk-solana's Sepolia queue; `nori-read` checks results against the batch roots sdk-solana's program stores; the keeper and apps use the sdk-solana npm SDK and its Rust crates | All during (repo starts 6 Oct; 146 commits at `e8569a1`)                                                                                                                                                                       |
+| [`submission-tempo`](https://github.com/Nori-zk/nori-worldsfair-submission-tempo)                               | Tempo submission: `NoriRead.sol` and Backstop in Solidity, the token migration (contracts, CLI, dry run, migrate app), the keeper, prove-balance app and bridge dashboard | The same on Tempo, through sdk-tempo's `NoriTempoTokenBridge` and npm SDK                                                                                                                               | All during (forked from the Solana submission 9 Oct; 64 commits at `c216a2d`)                                                                                                                                                  |
+| [`sdk-solana`](https://github.com/Nori-zk/nori-solana-sdk)                                                      | Nori verifier program (Anchor), proof submitter, CLI, Ethereum contracts (proof request queue), TS SDK                                                                    | Verifies bridge-head-solana's proofs with sp1-solana; uses bridge-head's crates (hashing, vkey, primitives); the SDK follows the prover's websocket                                                     | Before: a 3-commit stub program (332 lines of Rust); the proof request queue's design comes from the prover's pre-hackathon work. During: 37 commits, +61,895 / -2,607 lines                                                   |
+| [`sdk-tempo`](https://github.com/Nori-zk/nori-tempo-sdk)                                                        | `NoriTempoTokenBridge` (with `adoptMirror` for the migration), Ethereum contracts, TS SDK for Tempo                                                                       | Verifies bridge-head-tempo's proofs with Succinct's SP1 Solidity verifier; the same bridge-head crates                                                                                                  | All Tempo code during (forked from sdk-solana 9 Oct, so it carries the same 332-line stub in its history)                                                                                                                      |
+| [`bridge-head-solana`](https://github.com/Nori-zk/nori-bridge-head/tree/FEAT/solana-bridge-sepolia-glamsterdam) | The prover: Helios in SP1, proof request queue, Groth16 proofs                                                                                                            | Follows Sepolia finality and drains the queue in sdk-solana's contracts; its proofs go to sdk-solana's program                                                                                          | Before: fork of Succinct's sp1-helios, Nori's Ethereum light-client prover since Feb 2025; a Zellic audit report (added Aug 2025) and its remediation are in the repo. During: Solana target, 6 commits, +3,601 / -2,914 lines |
+| [`bridge-head-tempo`](https://github.com/Nori-zk/nori-bridge-head/tree/FEAT/tempo-bridge-sepolia-glamsterdam)   | Same prover, Tempo branch                                                                                                                                                 | The same for sdk-tempo's queue and bridge                                                                                                                                                               | Solana branch + 1 docs/Cargo.toml commit                                                                                                                                                                                       |
+| [`sp1-solana`](https://github.com/Nori-zk/sp1-solana/tree/feat/sp1-v6-groth16-master)                           | Groth16 verifier for Solana, ported to SP1 v6                                                                                                                             | A Rust crate in sdk-solana's program and proof submitter                                                                                                                                                | All before (fork of Succinct's sp1-solana, last commit 14 Sep, 3.5 h before the start); used as-is                                                                                                                             |
 
-## Our words
+## Glossary
 
-- **Bridge head** (`nbhead`): Nori's prover daemon. Its *head* is the last Ethereum finalized
+- **Bridge head** (`nbhead`): Nori's prover daemon. Its _head_ is the last Ethereum finalized
   slot it has proven, identified by the hash of the Helios store at that slot.
 - **Proof request queue**: the Sepolia contract where a request for a storage slot waits; one
-  queue per reader chain. Every request becomes a leaf in the next *batch*.
+  queue per reader chain. Every request becomes a leaf in the next _batch_.
 - **Snapshot**: one `NoriSnapshot` call that runs a list of view calls and commits their results
-  as one root; a *snapshot result* is one of those answers, checked later by `nori-read`.
+  as one root; a _snapshot result_ is one of those answers, checked later by `nori-read`.
 - **Batch root**: the SHA-256 Merkle root over the requests one proof covered; the reader chain
   stores it, consumers prove a result against it.
 - **Proof submitter**: the service that sends a proof to a reader chain and waits for it to
@@ -105,7 +105,7 @@ One row per submodule, each pinned to an exact commit; plain links, so nobody ne
   committed as an SVG next to its code. Every read, send and connection in the SDK is one.
 - **Connection grant**: the SDK's turn-taking at an RPC endpoint; a refusal caps the rate.
 
-## Infrastructure, not just contracts
+## Infrastructure
 
 ![Nori: how the services compose](docs/infrastructure.drawio.png)
 
@@ -186,12 +186,12 @@ deployed on Sepolia or Moderato.
 
 The four Solana apps are hosted (no DNS of our own yet) and read Sepolia and Solana devnet live:
 
-| App | What it shows | URL |
-| --- | --- | --- |
-| prove-balance | prove any address's ETH or ERC-20 balance to Solana | https://nori-solana-prove-balance.pages.dev |
-| proven-facts | the latest proven snapshots as sentences, with latency | https://nori-proven-facts.pages.dev |
-| guard-status | the Backstop guards in plain words | https://nori-guard-status.pages.dev |
-| bridge dashboard | the queue, the pipeline stage and latency | https://nori-solana-dashboard.pages.dev |
+| App              | What it shows                                          | URL                                         |
+| ---------------- | ------------------------------------------------------ | ------------------------------------------- |
+| prove-balance    | prove any address's ETH or ERC-20 balance to Solana    | https://nori-solana-prove-balance.pages.dev |
+| proven-facts     | the latest proven snapshots as sentences, with latency | https://nori-proven-facts.pages.dev         |
+| guard-status     | the Backstop guards in plain words                     | https://nori-guard-status.pages.dev         |
+| bridge dashboard | the queue, the pipeline stage and latency              | https://nori-solana-dashboard.pages.dev     |
 
 To run it yourself, start with the Solana submission. Its README has a three-step quickstart, and
 [docs/quickstart.md](https://github.com/Nori-zk/nori-worldsfair-submission/blob/develop/docs/quickstart.md)
