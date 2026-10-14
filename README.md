@@ -187,14 +187,14 @@ deployed on Sepolia or Moderato.
 
 ## Try it
 
-The four Solana apps are hosted (no DNS of our own yet) and read Sepolia and Solana devnet live:
+The four Solana apps are hosted and read Sepolia and Solana devnet live:
 
-| App              | What it shows                                          | URL                                         |
-| ---------------- | ------------------------------------------------------ | ------------------------------------------- |
-| prove-balance    | prove any address's ETH or ERC-20 balance to Solana    | https://nori-solana-prove-balance.pages.dev |
-| proven-facts     | the latest proven snapshots as sentences, with latency | https://nori-proven-facts.pages.dev         |
-| guard-status     | the Backstop guards in plain words                     | https://nori-guard-status.pages.dev         |
-| bridge dashboard | the queue, the pipeline stage and latency              | https://nori-solana-dashboard.pages.dev     |
+| App              | What it shows                                          | URL                                       |
+| ---------------- | ------------------------------------------------------ | ----------------------------------------- |
+| prove-balance    | prove any address's ETH or ERC-20 balance to Solana    | https://prove-balance.solana.nori-zk.com/ |
+| proven-facts     | the latest proven snapshots as sentences, with latency | https://facts.solana.nori-zk.com/         |
+| guard-status     | the Backstop guards in plain words                     | https://guards.solana.nori-zk.com/        |
+| bridge dashboard | the queue, the pipeline stage and latency              | https://solana.nori-zk.com/               |
 
 To run it yourself, start with the Solana submission. Its README has a three-step quickstart, and
 [docs/quickstart.md](https://github.com/Nori-zk/nori-worldsfair-submission/blob/develop/docs/quickstart.md)
